@@ -8,6 +8,7 @@ class Game {
     this.leader1 = createElement("h2");
     this.leader2 = createElement("h2");
     this.playerMoving = false;
+    this.leftKeyActive = false;
   }
 
   getState() {
@@ -305,11 +306,13 @@ class Game {
     if (keyIsDown(LEFT_ARROW) && player.positionX > width / 3 - 50) {
       player.positionX -= 5;
       player.update();
+      this.leftKeyActive = true
     }
 
     if (keyIsDown(RIGHT_ARROW) && player.positionX < width / 2 + 300) {
       player.positionX += 5;
       player.update();
+      this.leftKeyActive = false
     }
   }
 
@@ -335,11 +338,27 @@ class Game {
     });
   }
 
-  handleObstacleCollision(index){
-    if (cars[index-1].collide(obstacle1) || cars[index-1].collide(obstacle2)) {
-      if (player.life > 0) {
-        player.life -= 185/4        
+  handleObstacleCollision(index) {
+    if (cars[index - 1].collide(obstacle1) || cars[index - 1].collide(obstacle2)) {
+
+      if (this.leftKeyActive) {
+        player.positionX += 100
       }
+      else {
+        player.positionX -= 100
+
+      }
+
+
+      if (player.life > 0) {
+        player.life -= 185 / 4
+      }
+      if (player.life <= 0) {
+        gameState = 2
+        this.gameOver()
+      }
+
+
       player.update()
     }
   }
