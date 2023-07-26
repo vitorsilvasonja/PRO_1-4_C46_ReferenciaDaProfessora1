@@ -5,13 +5,12 @@ class Player {
     this.positionX = 0;
     this.positionY = 0;
     this.rank = 0;
-this.fuel = 185;
+    this.fuel = 185;
     this.life = 185;
     this.score = 0;
-
   }
 
-   addPlayer() {
+  addPlayer() {
     var playerIndex = "players/player" + this.index;
 
     if (this.index === 1) {
@@ -26,22 +25,23 @@ this.fuel = 185;
       positionY: this.positionY,
       rank: this.rank,
       score: this.score,
+      life: this.life
     });
   }
   //TA
   getDistance() {
     var playerDistanceRef = database.ref("players/player" + this.index);
-    playerDistanceRef.on("value", data => {
+    playerDistanceRef.on("value", (data) => {
       var data = data.val();
       this.positionX = data.positionX;
       this.positionY = data.positionY;
     });
   }
- 
+
   //Bp
   getCount() {
     var playerCountRef = database.ref("playerCount");
-    playerCountRef.on("value", data => {
+    playerCountRef.on("value", (data) => {
       playerCount = data.val();
     });
   }
@@ -49,7 +49,7 @@ this.fuel = 185;
   //Bp
   updateCount(count) {
     database.ref("/").update({
-      playerCount: count
+      playerCount: count,
     });
   }
 
@@ -61,26 +61,27 @@ this.fuel = 185;
       positionX: this.positionX,
       positionY: this.positionY,
       rank: this.rank,
-      score: this.score
-     });
+      score: this.score,
+      life:this.life
+    });
   }
 
   //Bp
   static getPlayersInfo() {
     var playerInfoRef = database.ref("players");
-    playerInfoRef.on("value", data => {
+    playerInfoRef.on("value", (data) => {
       allPlayers = data.val();
     });
   }
-  getCarsAtEnd(){
-    database.ref('carsAtEnd').on("value",(data)=>{
-      this.rank = data.val()
-    })
+  getCarsAtEnd() {
+    database.ref("carsAtEnd").on("value", (data) => {
+      this.rank = data.val();
+    });
   }
 
- static updateCarsAtEnd(rank) {
-   database.ref("/").update({
-     carsAtEnd: rank
-   });
- }
-} 
+  static updateCarsAtEnd(rank) {
+    database.ref("/").update({
+      carsAtEnd: rank,
+    });
+  }
+}
